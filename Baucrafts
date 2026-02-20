@@ -1,0 +1,194 @@
+<!DOCTYPE html>
+<html lang="ro">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Bau Crafts | Broderii & 3D Print</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:opsz,wght,FILL,GRAD@20..48,100..700,0..1,-50..200" />
+    <style>
+        .category-card:hover img { transform: scale(1.1); }
+        .hidden-section { display: none; }
+        .modal-active { display: flex !important; }
+        @keyframes fade-in {
+            from { opacity: 0; transform: translateY(10px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+        .animate-fade-in { animation: fade-in 0.5s ease forwards; }
+    </style>
+</head>
+<body class="bg-[#fafafa] font-sans overflow-x-hidden text-gray-900">
+
+    <div id="welcome-screen" class="fixed inset-0 z-[100] bg-white flex flex-col md:flex-row">
+        <div onclick="initStore('broderii')" class="group relative flex-1 overflow-hidden cursor-pointer border-r border-gray-100">
+            <img src="https://images.unsplash.com/photo-1572432675574-889814546412?auto=format&fit=crop&q=80&w=1000" class="absolute inset-0 w-full h-full object-cover opacity-60 group-hover:opacity-80 transition duration-700">
+            <div class="relative h-full flex flex-col items-center justify-center bg-black/10 group-hover:bg-transparent transition duration-500">
+                <h1 class="text-white text-xs tracking-[0.5em] mb-4 opacity-80 uppercase">Bau Crafts</h1>
+                <h2 class="text-4xl md:text-6xl font-light tracking-tighter text-white drop-shadow-md">BRODERII</h2>
+                <span class="mt-4 px-6 py-2 border border-white text-white text-sm tracking-widest uppercase opacity-0 group-hover:opacity-100 transition duration-500">Intră în Atelier</span>
+            </div>
+        </div>
+        <div onclick="initStore('3d')" class="group relative flex-1 overflow-hidden cursor-pointer">
+            <img src="https://images.unsplash.com/photo-1631035515641-7b9835165780?auto=format&fit=crop&q=80&w=1000" class="absolute inset-0 w-full h-full object-cover opacity-60 group-hover:opacity-80 transition duration-700">
+            <div class="relative h-full flex flex-col items-center justify-center bg-black/10 group-hover:bg-transparent transition duration-500">
+                <h1 class="text-white text-xs tracking-[0.5em] mb-4 opacity-80 uppercase">Bau Crafts</h1>
+                <h2 class="text-4xl md:text-6xl font-light tracking-tighter text-white drop-shadow-md">PROIECTE 3D</h2>
+                <span class="mt-4 px-6 py-2 border border-white text-white text-sm tracking-widest uppercase opacity-0 group-hover:opacity-100 transition duration-500">Vezi Prototipuri</span>
+            </div>
+        </div>
+    </div>
+
+    <div id="main-content" class="hidden-section flex flex-col min-h-screen">
+        <nav class="bg-white/90 backdrop-blur-md sticky top-0 z-50 border-b border-gray-100">
+            <div class="container mx-auto px-6 py-4 flex justify-between items-center">
+                <button onclick="location.reload()" class="text-xl font-black tracking-tighter uppercase italic text-black">Bau Crafts</button>
+                <div class="flex gap-4 md:gap-8">
+                    <button id="nav-broderii" onclick="renderCategory('broderii')" class="text-xs md:text-sm font-bold tracking-widest hover:text-blue-600 transition">BRODERII</button>
+                    <button id="nav-3d" onclick="renderCategory('3d')" class="text-xs md:text-sm font-bold tracking-widest hover:text-blue-600 transition">3D PRINT</button>
+                </div>
+            </div>
+        </nav>
+
+        <div id="sub-nav" class="container mx-auto px-6 py-8 flex gap-3 overflow-x-auto"></div>
+
+        <main class="container mx-auto px-6 flex-grow pb-20">
+            <div id="grid" class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-x-8 gap-y-12"></div>
+        </main>
+
+        <footer class="bg-white border-t border-gray-100 pt-16 pb-8">
+            <div class="container mx-auto px-6">
+                <div class="grid grid-cols-1 md:grid-cols-3 gap-12 mb-12">
+                    <div>
+                        <h3 class="text-2xl font-black tracking-tighter uppercase mb-4 italic">Bau Crafts</h3>
+                        <p class="text-gray-500 text-sm leading-relaxed max-w-xs">
+                            Atelier de creație specializat în broderii personalizate și printuri 3D de înaltă precizie. Transformăm ideile tale în obiecte tangibile.
+                        </p>
+                    </div>
+                    <div>
+                        <h4 class="text-xs font-bold uppercase tracking-[0.2em] mb-6 text-blue-600">Contact</h4>
+                        <ul class="space-y-4 text-sm text-gray-600">
+                            <li class="flex items-center gap-3 italic font-medium tracking-tight">
+                                <span class="material-symbols-outlined text-gray-400">mail</span> 
+                                salut@baucrafts.ro
+                            </li>
+                            <li class="flex items-center gap-3 italic font-medium tracking-tight">
+                                <span class="material-symbols-outlined text-gray-400">call</span> 
+                                +40 7xx xxx xxx
+                            </li>
+                        </ul>
+                    </div>
+                    <div>
+                        <h4 class="text-xs font-bold uppercase tracking-[0.2em] mb-6 text-blue-600">Urmărește-ne</h4>
+                        <div class="flex gap-4">
+                            <a href="https://instagram.com" target="_blank" class="w-10 h-10 rounded-full border border-gray-200 flex items-center justify-center hover:bg-black hover:text-white transition duration-300">
+                                <svg class="w-5 h-5 fill-current" viewBox="0 0 24 24"><path d="M12 2.163c3.204 0 3.584.012 4.85.07 3.252.148 4.771 1.691 4.919 4.919.058 1.265.069 1.645.069 4.849 0 3.205-.012 3.584-.069 4.849-.149 3.225-1.664 4.771-4.919 4.919-1.266.058-1.644.07-4.85.07-3.204 0-3.584-.012-4.849-.07-3.26-.149-4.771-1.699-4.919-4.92-.058-1.265-.07-1.644-.07-4.849 0-3.204.013-3.583.07-4.849.149-3.227 1.664-4.771 4.919-4.919 1.266-.057 1.645-.069 4.849-.069zm0-2.163c-3.259 0-3.667.014-4.947.072-4.358.2-6.78 2.618-6.98 6.98-.059 1.281-.073 1.689-.073 4.948 0 3.259.014 3.668.072 4.948.2 4.358 2.618 6.78 6.98 6.98 1.281.058 1.689.072 4.948.072 3.259 0 3.668-.014 4.948-.072 4.354-.2 6.782-2.618 6.979-6.98.059-1.28.073-1.689.073-4.948 0-3.259-.014-3.667-.072-4.947-.196-4.354-2.617-6.78-6.979-6.98-1.281-.059-1.69-.073-4.949-.073zm0 5.838c-3.403 0-6.162 2.759-6.162 6.162s2.759 6.163 6.162 6.163 6.162-2.759 6.162-6.163c0-3.403-2.759-6.162-6.162-6.162zm0 10.162c-2.209 0-4-1.79-4-4 0-2.209 1.791-4 4-4s4 1.791 4 4c0 2.21-1.791 4-4 4zm6.406-11.845c-.796 0-1.441.645-1.441 1.44s.645 1.44 1.441 1.44c.795 0 1.439-.645 1.439-1.44s-.644-1.44-1.439-1.44z"/></svg>
+                            </a>
+                            <a href="https://tiktok.com" target="_blank" class="w-10 h-10 rounded-full border border-gray-200 flex items-center justify-center hover:bg-black hover:text-white transition duration-300">
+                                <svg class="w-5 h-5 fill-current" viewBox="0 0 24 24"><path d="M12.525.02c1.31-.02 2.61-.01 3.91-.02.08 1.53.63 3.09 1.75 4.17 1.12 1.11 2.7 1.62 4.24 1.79v4.03c-1.44-.05-2.89-.35-4.2-.97-.57-.26-1.1-.59-1.62-.93-.01 2.92.01 5.84-.02 8.75-.03 1.4-.54 2.79-1.35 3.94-1.31 1.92-3.58 3.17-5.91 3.21-1.43.08-2.86-.31-4.08-1.03-2.02-1.19-3.44-3.37-3.65-5.71-.02-.5-.03-1-.01-1.49.18-1.9 1.12-3.72 2.58-4.96 1.66-1.44 3.98-2.13 6.15-1.72.02 1.48-.04 2.96-.04 4.44-.9-.32-1.98-.23-2.81.33-.85.51-1.44 1.43-1.58 2.41-.05.38-.03.77.01 1.14.2 1.15 1.2 2.15 2.34 2.38.38.08.77.08 1.16.03 1.35-.12 2.5-1.1 2.87-2.4.08-.34.1-.7.1-1.05V.02z"/></svg>
+                            </a>
+                        </div>
+                    </div>
+                </div>
+                <div class="border-t border-gray-50 pt-8 flex flex-col md:flex-row justify-between items-center gap-4">
+                    <p class="text-[10px] text-gray-400 uppercase tracking-widest">&copy; 2026 Bau Crafts. Toate drepturile rezervate.</p>
+                    <p class="text-[10px] text-gray-400 uppercase tracking-widest italic font-bold">Design Minimalist / Calitate Maximă</p>
+                </div>
+            </div>
+        </footer>
+    </div>
+
+    <div id="modal" class="fixed inset-0 bg-black/50 backdrop-blur-sm hidden items-center justify-center z-[110] p-4" onclick="closeModal()">
+        <div class="bg-white max-w-4xl w-full rounded-2xl shadow-2xl overflow-hidden flex flex-col md:flex-row relative" onclick="event.stopPropagation()">
+            <button onclick="closeModal()" class="absolute top-4 right-6 text-3xl font-light hover:rotate-90 transition transform duration-300">&times;</button>
+            <div id="modal-img" class="md:w-1/2 bg-gray-50 flex items-center justify-center p-4 lg:p-12 text-center"></div>
+            <div id="modal-details" class="md:w-1/2 p-10 flex flex-col justify-center bg-white"></div>
+        </div>
+    </div>
+
+    <script>
+        const products = [
+            ...Array.from({length: 10}, (_, i) => ({
+                id: i, cat: 'broderii', sub: i < 5 ? 'Tricouri' : 'Tablouri', 
+                title: `Produs Brodat ${i+1}`, price: `${120 + i*5} RON`, 
+                colors: ['#FFFFFF', '#000000', '#FFD700'], 
+                img: 'https://via.placeholder.com/500x600/f8fafc/64748b?text=BRODERIE'
+            })),
+            ...Array.from({length: 10}, (_, i) => ({
+                id: i+10, cat: '3d', sub: i < 5 ? 'Articulat' : 'Decor', 
+                title: `Model 3D Printat ${i+1}`, price: `${45 + i*10} RON`, 
+                colors: ['#334155', '#10b981', '#6366f1'], 
+                img: 'https://via.placeholder.com/500x600/f1f5f9/475569?text=3D+PRINT'
+            }))
+        ];
+
+        function initStore(category) {
+            document.getElementById('welcome-screen').classList.add('hidden-section');
+            document.getElementById('main-content').classList.remove('hidden-section');
+            window.scrollTo(0, 0);
+            renderCategory(category);
+        }
+
+        function renderCategory(cat) {
+            document.getElementById('nav-broderii').classList.toggle('text-blue-600', cat === 'broderii');
+            document.getElementById('nav-3d').classList.toggle('text-blue-600', cat === '3d');
+
+            const filtered = products.filter(p => p.cat === cat);
+            const subs = [...new Set(filtered.map(p => p.sub))];
+            
+            document.getElementById('sub-nav').innerHTML = subs.map(s => 
+                `<button onclick="renderSub('${cat}', '${s}')" class="px-5 py-2 border border-gray-200 rounded-full hover:bg-black hover:text-white text-[10px] font-bold tracking-widest transition-all duration-300 uppercase">${s}</button>`
+            ).join('');
+            
+            renderGrid(filtered);
+        }
+
+        function renderSub(cat, sub) {
+            const filtered = products.filter(p => p.cat === cat && p.sub === sub);
+            renderGrid(filtered);
+        }
+
+        function renderGrid(data) {
+            document.getElementById('grid').innerHTML = data.map(p => `
+                <div class="cursor-pointer group animate-fade-in" onclick="openModal(${p.id})">
+                    <div class="aspect-[3/4] overflow-hidden rounded-sm bg-gray-100 mb-5 relative">
+                        <img src="${p.img}" class="w-full h-full object-cover transition duration-1000 group-hover:scale-105">
+                        <div class="absolute inset-0 bg-black/0 group-hover:bg-black/5 transition duration-500"></div>
+                    </div>
+                    <h3 class="text-[10px] uppercase tracking-[0.2em] text-blue-500 mb-2 font-bold">${p.sub}</h3>
+                    <h3 class="text-sm font-medium text-black tracking-tight">${p.title}</h3>
+                    <p class="text-gray-400 text-xs mt-2 italic font-serif">${p.price}</p>
+                </div>
+            `).join('');
+        }
+
+        function openModal(id) {
+            const p = products.find(p => p.id === id);
+            document.getElementById('modal-img').innerHTML = `<img src="${p.img}" class="max-h-[60vh] md:max-h-full object-contain">`;
+            document.getElementById('modal-details').innerHTML = `
+                <span class="text-[10px] tracking-[0.3em] text-blue-600 uppercase font-black">${p.sub}</span>
+                <h2 class="text-3xl font-light mt-4 tracking-tighter">${p.title}</h2>
+                <p class="text-2xl mt-4 font-bold text-gray-900">${p.price}</p>
+                <div class="mt-8">
+                    <p class="text-[10px] uppercase tracking-widest text-gray-400 mb-4 font-bold">Variante Culoare</p>
+                    <div class="flex gap-3">
+                        ${p.colors.map(c => `<button class="w-8 h-8 rounded-full border border-gray-100 shadow-sm" style="background:${c}"></button>`).join('')}
+                    </div>
+                </div>
+                <div class="mt-10 p-4 border border-gray-100 rounded-lg bg-gray-50">
+                    <p class="text-[11px] text-gray-500 uppercase leading-relaxed font-medium">
+                        Toate produsele sunt realizate la comandă. Timp execuție: 3-5 zile lucrătoare.
+                    </p>
+                </div>
+                <a href="mailto:salut@baucrafts.ro?subject=Solicitare oferta: ${p.title}" class="mt-8 w-full bg-black text-white py-5 rounded-sm font-bold tracking-[0.2em] text-xs text-center hover:bg-gray-800 transition active:scale-95 uppercase">Trimite Cerere</a>
+            `;
+            document.getElementById('modal').classList.add('modal-active');
+            document.body.style.overflow = 'hidden';
+        }
+
+        function closeModal() {
+            document.getElementById('modal').classList.remove('modal-active');
+            document.body.style.overflow = 'auto';
+        }
+    </script>
+</body>
+</html>
